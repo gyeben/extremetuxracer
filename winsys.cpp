@@ -156,14 +156,6 @@ static void init_ogl(CUBE_STATE_T *state)
    // connect the context to the surface
    result = eglMakeCurrent(state->display, state->surface, state->surface, state->context);
    assert(EGL_FALSE != result);
-
-   // Set background color and clear buffers
-   glClearColor(0.15f, 0.25f, 0.35f, 1.0f);
-
-   // Enable back face culling.
-   glEnable(GL_CULL_FACE);
-
-   glMatrixMode(GL_MODELVIEW);
 }
 
 CWinsys Winsys;
@@ -332,14 +324,15 @@ void CWinsys::Init () {
     // use EGL to initialise GLES
     bcm_host_init();
     g_x11Display = XOpenDisplay(NULL);
-    if (!g_x11Display)
-    {
-        fprintf(stderr, "ERROR: unable to get display!n");
-        exit(-1);
-    }
-
+//    if (!g_x11Display)
+//    {
+//        fprintf(stderr, "ERROR: unable to get display!n");
+//        exit(-1);
+//    }
     init_ogl(state);
-
+    g_eglDisplay = state->display;
+    g_eglContext = state->context;
+    g_eglSurface = state->surface;
     // Get the e window handle
     SDL_SysWMinfo sysInfo; //Will hold our Window information
     SDL_VERSION(&sysInfo.version); //Set SDL version
